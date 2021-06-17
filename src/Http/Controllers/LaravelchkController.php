@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class LaravelchkController extends Controller
 {
-    public function activation_index(){
+    public function activation_index()
+    {
         return view('installation.activation');
     }
 
@@ -48,13 +49,14 @@ class LaravelchkController extends Controller
                     ]);
                 }
 
-                session()->put('purchase_code',$request['purchase_key']);
+                session()->put('purchase_code', $request['purchase_key']);
 
                 return redirect()->route('step3');
             }
             return redirect('activate-software');
         } catch (\Exception $exception) {
-            return back()->withErrors(['errors', 'Invalid purchase key!']);
+            session()->flash('error', 'Invalid purchase key!');
+            return back();
         }
     }
 
@@ -97,13 +99,15 @@ class LaravelchkController extends Controller
                     ]);
                 }
 
-                session()->put('purchase_code',$request['purchase_key']);
+                session()->put('purchase_code', $request['purchase_key']);
 
                 return redirect()->route('step3');
             }
-            return back()->withErrors(['errors', 'Credential does not match.']);
+            session()->flash('error', 'Credential does not match.');
+            return back();
         } catch (\Exception $exception) {
-            return back()->withErrors(['errors', 'Credential does not match.']);
+            session()->flash('error', 'Credential does not match.');
+            return back();
         }
     }
 }
