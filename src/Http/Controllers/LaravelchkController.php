@@ -48,6 +48,8 @@ class LaravelchkController extends Controller
                     ]);
                 }
 
+                session()->put('purchase_code',$request['purchase_key']);
+
                 return redirect()->route('step3');
             }
             return redirect('activate-software');
@@ -94,6 +96,8 @@ class LaravelchkController extends Controller
                         'value' => $request['username']
                     ]);
                 }
+
+                session()->put('purchase_code',$request['purchase_key']);
 
                 return redirect()->route('step3');
             }
