@@ -95,6 +95,8 @@ class LaravelchkController extends Controller
                     ]);
                 }
 
+                session('purchase_code',$request['purchase_key']);
+
                 return redirect()->route('step3');
             }
             return back()->withErrors(['errors', 'Credential does not match.']);
