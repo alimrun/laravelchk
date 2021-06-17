@@ -24,17 +24,20 @@ class LaravelchkController extends Controller
         // close the connection, release resources used
         curl_close($ch);
         // do anything you want with your response
-        if (base64_decode(json_decode($response, true)['active'])) {
-            DB::table('soft_credentials')->insert([
-                'key' => 'purchase_key',
-                'value' => $request['purchase_key']
-            ]);
-            DB::table('soft_credentials')->insert([
-                'key' => 'username',
-                'value' => $request['username']
-            ]);
-            return redirect('step3');
+        try {
+            if (base64_decode(json_decode($response, true)['active'])) {
+                DB::table('soft_credentials')->insert([
+                    'key' => 'purchase_key',
+                    'value' => $request['purchase_key']
+                ]);
+                DB::table('soft_credentials')->insert([
+                    'key' => 'username',
+                    'value' => $request['username']
+                ]);
+                return redirect('step3');
+            }
+        }catch (\Exception $exception){
+            return back()->withErrors(['msg', 'Invalid purchase key!']);
         }
-        return back()->withErrors(['msg', 'Invalid purchase key!']);
     }
 }
