@@ -48,7 +48,7 @@ class LaravelchkController extends Controller
                     ]);
                 }
 
-                session('purchase_code',$request['purchase_key']);
+                session()->put('purchase_code',$request['purchase_key']);
 
                 return redirect()->route('step3');
             }
@@ -97,7 +97,7 @@ class LaravelchkController extends Controller
                     ]);
                 }
 
-                session('purchase_code',$request['purchase_key']);
+                session()->put('purchase_code',$request['purchase_key']);
 
                 return redirect()->route('step3');
             }
