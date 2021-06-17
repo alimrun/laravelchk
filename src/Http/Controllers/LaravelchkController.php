@@ -34,8 +34,9 @@ class LaravelchkController extends Controller
                     'key' => 'username',
                     'value' => $request['username']
                 ]);
-                return redirect('step3');
+                return redirect()->route('step3');
             }
+            return back()->withErrors(['msg', 'Invalid purchase key!']);
         }catch (\Exception $exception){
             return back()->withErrors(['msg', 'Invalid purchase key!']);
         }
