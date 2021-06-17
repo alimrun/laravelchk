@@ -52,7 +52,7 @@ class LaravelchkController extends Controller
             }
             return redirect('activate-software');
         } catch (\Exception $exception) {
-            return back()->withErrors(['msg', 'Invalid purchase key!']);
+            return back()->withErrors(['errors', 'Invalid purchase key!']);
         }
     }
 
@@ -97,9 +97,9 @@ class LaravelchkController extends Controller
 
                 return redirect()->route('step3');
             }
-            return back()->withErrors(['msg', 'Credential does not match.']);
+            return back()->withErrors(['errors', 'Credential does not match.']);
         } catch (\Exception $exception) {
-            return back()->withErrors(['msg', 'Credential does not match.']);
+            return back()->withErrors(['errors', 'Credential does not match.']);
         }
     }
 }
