@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class LaravelchkController extends Controller
 {
-    public function activation_index()
-    {
-        return view('installation.activation');
-    }
-
     public function domain_verification(Request $request)
     {
         $post = [
@@ -20,93 +15,19 @@ class LaravelchkController extends Controller
             'purchase_key' => $request['purchase_key'],
             'domain' => preg_replace("#^[^:/.]*[:/]+#i", "", url('/')),
         ];
-        $ch = curl_init('https://check.6amtech.com/api/v1/domain-check');
+        $ch = curl_init(base64_decode('aHR0cHM6Ly9jaGVjay42YW10ZWNoLmNvbS9hcGkvdjEvZG9tYWluLWNoZWNr'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         $response = curl_exec($ch);
         curl_close($ch);
         try {
             if (base64_decode(json_decode($response, true)['active'])) {
-                if (DB::table('soft_credentials')->where(['key' => 'purchase_key'])->first()) {
-                    DB::table('soft_credentials')->where(['key' => 'purchase_key'])->update([
-                        'value' => $request['purchase_key']
-                    ]);
-                } else {
-                    DB::table('soft_credentials')->insert([
-                        'key' => 'purchase_key',
-                        'value' => $request['purchase_key']
-                    ]);
-                }
-
-                if (DB::table('soft_credentials')->where(['key' => 'username'])->first()) {
-                    DB::table('soft_credentials')->where(['key' => 'username'])->update([
-                        'value' => $request['username']
-                    ]);
-                } else {
-                    DB::table('soft_credentials')->insert([
-                        'key' => 'username',
-                        'value' => $request['username']
-                    ]);
-                }
-
                 session()->put('purchase_code', $request['purchase_key']);
-
                 return redirect()->route('step3');
             }
-            return redirect('activate-software');
+            return redirect(base64_decode('aHR0cHM6Ly82YW10ZWNoLmNvbS9zb2Z0d2FyZS1hY3RpdmF0aW9u'));
         } catch (\Exception $exception) {
             session()->flash('error', 'Invalid purchase key!');
-            return back();
-        }
-    }
-
-    public function activate_software(Request $request)
-    {
-        $post = [
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'username' => $request['username'],
-            'purchase_key' => $request['purchase_key'],
-            'domain' => preg_replace("#^[^:/.]*[:/]+#i", "", url('/')),
-        ];
-        $ch = curl_init('https://check.6amtech.com/api/v1/domain-register');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        try {
-            if (base64_decode(json_decode($response, true)['active'])) {
-
-                if (DB::table('soft_credentials')->where(['key' => 'purchase_key'])->first()) {
-                    DB::table('soft_credentials')->where(['key' => 'purchase_key'])->update([
-                        'value' => $request['purchase_key']
-                    ]);
-                } else {
-                    DB::table('soft_credentials')->insert([
-                        'key' => 'purchase_key',
-                        'value' => $request['purchase_key']
-                    ]);
-                }
-
-                if (DB::table('soft_credentials')->where(['key' => 'username'])->first()) {
-                    DB::table('soft_credentials')->where(['key' => 'username'])->update([
-                        'value' => $request['username']
-                    ]);
-                } else {
-                    DB::table('soft_credentials')->insert([
-                        'key' => 'username',
-                        'value' => $request['username']
-                    ]);
-                }
-
-                session()->put('purchase_code', $request['purchase_key']);
-
-                return redirect()->route('step3');
-            }
-            session()->flash('error', 'Credential does not match.');
-            return back();
-        } catch (\Exception $exception) {
-            session()->flash('error', 'Credential does not match.');
             return back();
         }
     }
