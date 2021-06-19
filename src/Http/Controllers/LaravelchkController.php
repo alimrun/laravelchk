@@ -28,8 +28,7 @@ class LaravelchkController extends Controller
             }
             return redirect(base64_decode('aHR0cHM6Ly82YW10ZWNoLmNvbS9zb2Z0d2FyZS1hY3RpdmF0aW9u'));
         } catch (\Exception $exception) {
-            session()->flash('error', base64_decode('SW52YWxpZCBwdXJjaGFzZSBrZXkh'));//ipk
-            return back();
+            return redirect(base64_decode('aHR0cHM6Ly82YW10ZWNoLmNvbS9zb2Z0d2FyZS1hY3RpdmF0aW9u'));
         }
     }
 
