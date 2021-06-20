@@ -47,9 +47,13 @@ class LaravelchkController extends Controller
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
             $response = curl_exec($ch);
             curl_close($ch);
-            return base64_decode(json_decode($response, true)['active']);
+            return response()->json([
+                'active' => base64_decode(json_decode($response, true)['active'])
+            ]);
         } catch (\Exception $exception) {
-            return 0;
+            return response()->json([
+                'active' => 0
+            ]);
         }
     }
 }
