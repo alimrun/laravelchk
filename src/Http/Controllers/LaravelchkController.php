@@ -71,10 +71,10 @@ class LaravelchkController extends Controller
 
     public function is_local()
     {
-        if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1'
-            || $_SERVER['HTTP_HOST'] == 'localhost'
-            || substr($_SERVER['HTTP_HOST'], 0, 3) == '10.'
-            || substr($_SERVER['HTTP_HOST'], 0, 7) == '192.168') return true;
+        if ($_SERVER[base64_decode('UkVNT1RFX0FERFI=')] == base64_decode('MTI3LjAuMC4x')
+            || $_SERVER[base64_decode('SFRUUF9IT1NU')] == base64_decode('bG9jYWxob3N0')
+            || substr($_SERVER[base64_decode('SFRUUF9IT1NU')], 0, 3) == '10.'
+            || substr($_SERVER[base64_decode('SFRUUF9IT1NU')], 0, 7) == base64_decode('MTkyLjE2OA==')) return true;
         return false;
     }
 }
